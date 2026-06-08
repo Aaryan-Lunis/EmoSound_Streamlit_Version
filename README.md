@@ -2,7 +2,7 @@
 
 A machine learning platform that detects emotions from text and voice input, then recommends music that matches your current mood using Spotify's audio feature API and transformer-based NLP.
 
-> **Status**: In Development — v0.8.0-alpha | Last updated: September 2025
+> **Status**: Complete — v1.0.0 | Last updated: September 2025
 
 ---
 
@@ -63,7 +63,7 @@ User Input → Preprocessing → Tokenization → DistilRoBERTa → Emotion Clas
 - Parameters: 82M
 - Layers: 6 transformer encoder layers, 12 attention heads
 - Hidden size: 768
-- Accuracy: ~89% on emotion classification (see performance metrics)
+- Accuracy: ~89% on emotion classification
 - Pre-trained on 160GB text, fine-tuned on emotion-labeled datasets
 
 ### Audio Pipeline
@@ -85,7 +85,7 @@ Learning rate decays with interaction count to stabilize over time.
 
 ## Performance
 
-| Metric | Current |
+| Metric | Value |
 |---|---|
 | Emotion Detection Accuracy | 89% |
 | Average Response Time | 1.2s |
@@ -176,21 +176,21 @@ Opens at `http://localhost:8501`.
 
 ## Project Structure
 emosound/
-├── app.py                        # Entry point
+├── app.py                          # Entry point
 ├── requirements.txt
 ├── auth/
-│   └── authentication.py         # Bcrypt auth logic
+│   └── authentication.py           # Bcrypt auth logic
 ├── database/
-│   ├── models.py                  # SQLAlchemy models
-│   ├── database.py                # Queries and operations
+│   ├── models.py                   # SQLAlchemy models
+│   ├── database.py                 # Queries and operations
 │   └── init_db.py
 ├── emotion/
-│   ├── text_emotion.py            # DistilRoBERTa pipeline
-│   ├── audio_emotion.py           # Audio processing
+│   ├── text_emotion.py             # DistilRoBERTa pipeline
+│   ├── audio_emotion.py            # Audio processing
 │   └── emotion_utils.py
 ├── api/
-│   ├── spotify_api.py             # Spotify wrapper
-│   └── spotify_ml_recommender.py  # Recommendation logic
+│   ├── spotify_api.py              # Spotify wrapper
+│   └── spotify_ml_recommender.py   # Recommendation logic
 ├── ui/
 │   ├── components.py
 │   ├── pages.py
@@ -201,9 +201,9 @@ emosound/
 ---
 
 ## Database Schema
-Users ──────── EmotionLogs ────── Emotions
+Users ──────── EmotionLogs ──────── Emotions
 │
-└────────── UserSongHistory ── Songs
+└─────────── UserSongHistory ──── Songs
 
 - **Users**: credentials, Spotify OAuth tokens
 - **Emotions**: 10 predefined classes with color codes
@@ -255,7 +255,7 @@ git push origin feature/your-feature-name
   author  = {Manav Bhuta and Aaryan Lunis},
   year    = {2024},
   url     = {https://github.com/Aaryan-Lunis/EmoSound_Streamlit_Version},
-  version = {0.8.0-alpha}
+  version = {1.0.0}
 }
 ```
 
