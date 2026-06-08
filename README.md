@@ -55,8 +55,17 @@ The core pipeline: user input (text or audio) → DistilRoBERTa emotion classifi
 
 ## ML Architecture
 
-### Text Emotion Pipeline
-User Input → Preprocessing → Tokenization → DistilRoBERTa → Emotion Class + Confidence Score
+### 1. Text Emotion Detection Pipeline
+
+```mermaid
+graph LR
+    A[User Input Text] --> B[Preprocessing]
+    B --> C[Tokenization]
+    C --> D[DistilRoBERTa Model]
+    D --> E[Emotion Classification]
+    E --> F[Confidence Score]
+    F --> G[Emotion Mapping]
+```
 
 **Model specs:**
 - Architecture: DistilRoBERTa (distilled RoBERTa)
@@ -66,12 +75,20 @@ User Input → Preprocessing → Tokenization → DistilRoBERTa → Emotion Clas
 - Accuracy: ~89% on emotion classification
 - Pre-trained on 160GB text, fine-tuned on emotion-labeled datasets
 
-### Audio Pipeline
-Audio Input → Speech-to-Text → Text Emotion Analysis
-→ Feature Extraction (MFCCs, Spectral Centroid, ZCR, Tempo, Pitch)
-→ Confidence Adjustment
+### 2. Audio Pipeline
 
-### Recommendation Algorithm
+```mermaid
+graph LR
+    A[Audio Input] --> B[Speech-to-Text]
+    B --> C[Text Emotion Analysis]
+    A --> D[Feature Extraction]
+    D --> E[MFCCs]
+    D --> F[Spectral Centroid]
+    D --> G[ZCR / Tempo / Pitch]
+    E & F & G --> H[Confidence Adjustment]
+```
+
+### 3. Recommendation Algorithm
 Hybrid Score = 0.4 × content_similarity
 + 0.3 × collaborative_score
 + 0.2 × popularity_rank
@@ -175,41 +192,47 @@ Opens at `http://localhost:8501`.
 ---
 
 ## Project Structure
-emosound/
-├── app.py                          # Entry point
-├── requirements.txt
-├── auth/
-│   └── authentication.py           # Bcrypt auth logic
-├── database/
-│   ├── models.py                   # SQLAlchemy models
-│   ├── database.py                 # Queries and operations
-│   └── init_db.py
-├── emotion/
-│   ├── text_emotion.py             # DistilRoBERTa pipeline
-│   ├── audio_emotion.py            # Audio processing
-│   └── emotion_utils.py
-├── api/
-│   ├── spotify_api.py              # Spotify wrapper
-│   └── spotify_ml_recommender.py   # Recommendation logic
-├── ui/
-│   ├── components.py
-│   ├── pages.py
-│   └── styles.py
-└── utils/
-└── helpers.py
+
+    emosound/
+        app.py                          # Entry point
+        requirements.txt
+        auth/
+            authentication.py           # Bcrypt auth logic
+        database/
+            models.py                   # SQLAlchemy models
+            database.py                 # Queries and operations
+            init_db.py
+        emotion/
+            text_emotion.py             # DistilRoBERTa pipeline
+            audio_emotion.py            # Audio processing
+            emotion_utils.py
+        api/
+            spotify_api.py              # Spotify wrapper
+            spotify_ml_recommender.py   # Recommendation logic
+        ui/
+            components.py
+            pages.py
+            styles.py
+        utils/
+            helpers.py
 
 ---
 
 ## Database Schema
-Users ──────── EmotionLogs ──────── Emotions
-│
-└─────────── UserSongHistory ──── Songs
 
-- **Users**: credentials, Spotify OAuth tokens
-- **Emotions**: 10 predefined classes with color codes
-- **EmotionLogs**: full detection history with confidence scores and timestamps
-- **Songs**: Spotify metadata cached for performance
-- **UserSongHistory**: interaction log with like/dislike for model training
+| Table | Description |
+|---|---|
+| Users | Credentials and Spotify OAuth tokens |
+| Emotions | 10 predefined classes with color codes |
+| EmotionLogs | Full detection history with confidence scores and timestamps |
+| Songs | Spotify metadata cached for performance |
+| UserSongHistory | Interaction log with like/dislike for model training |
+
+**Relationships:**
+
+    Users ──── EmotionLogs ──── Emotions
+      │
+      └──────── UserSongHistory ──── Songs
 
 ---
 
